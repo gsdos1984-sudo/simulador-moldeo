@@ -1,0 +1,1316 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyOTvVNBRqKq6QdAvG72qD9c",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/gsdos1984-sudo/simulador-moldeo/blob/main/Reportes\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "e749f9b4",
+        "outputId": "dda8290d-1c75-4117-9cda-f42570d1e946"
+      },
+      "source": [
+        "!unzip -q nlp_report_classifier_starter.zip -d .\n",
+        "%cd nlp_report_classifier"
+      ],
+      "execution_count": 2,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[Errno 2] No such file or directory: 'nlp_report_classifier'\n",
+            "/content\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "hxbLNeeUWXxm",
+        "outputId": "1abb7f0b-2e5d-45fb-97d6-d1b56325436c"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: pandas in /usr/local/lib/python3.12/dist-packages (2.2.2)\n",
+            "Requirement already satisfied: scikit-learn in /usr/local/lib/python3.12/dist-packages (1.6.1)\n",
+            "Requirement already satisfied: joblib in /usr/local/lib/python3.12/dist-packages (1.5.2)\n",
+            "Requirement already satisfied: numpy>=1.26.0 in /usr/local/lib/python3.12/dist-packages (from pandas) (2.0.2)\n",
+            "Requirement already satisfied: python-dateutil>=2.8.2 in /usr/local/lib/python3.12/dist-packages (from pandas) (2.9.0.post0)\n",
+            "Requirement already satisfied: pytz>=2020.1 in /usr/local/lib/python3.12/dist-packages (from pandas) (2025.2)\n",
+            "Requirement already satisfied: tzdata>=2022.7 in /usr/local/lib/python3.12/dist-packages (from pandas) (2025.2)\n",
+            "Requirement already satisfied: scipy>=1.6.0 in /usr/local/lib/python3.12/dist-packages (from scikit-learn) (1.16.1)\n",
+            "Requirement already satisfied: threadpoolctl>=3.1.0 in /usr/local/lib/python3.12/dist-packages (from scikit-learn) (3.6.0)\n",
+            "Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.12/dist-packages (from python-dateutil>=2.8.2->pandas) (1.17.0)\n"
+          ]
+        }
+      ],
+      "source": [
+        "!pip install pandas scikit-learn joblib\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!unzip -q nlp_report_classifier_starter.zip -d .\n",
+        "%cd nlp_report_classifier\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "gEkNQih6Xu15",
+        "outputId": "946ebef1-c67a-4f26-9fa5-a1fa79a1fcb4"
+      },
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "replace ./requirements.txt? [y]es, [n]o, [A]ll, [N]one, [r]ename: A\n",
+            "[Errno 2] No such file or directory: 'nlp_report_classifier'\n",
+            "/content\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "ls\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "kf4ymxVwYQE1",
+        "outputId": "feaf2c7e-baaa-4e27-b805-c905573ea186"
+      },
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\u001b[0m\u001b[01;34mdata\u001b[0m/    nlp_report_classifier_starter.zip  requirements.txt  \u001b[01;34msrc\u001b[0m/\n",
+            "\u001b[01;34mmodels\u001b[0m/  README.md                          \u001b[01;34msample_data\u001b[0m/\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!python src/train.py --data data/raw/example_reports_es.csv --out models/model.joblib\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "3WodQdpNYjGL",
+        "outputId": "7f16b104-651e-46f2-9188-11e7ebe59a20"
+      },
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Accuracy: 0.375\n",
+            "\n",
+            "== Clasification Report ==\n",
+            "/usr/local/lib/python3.12/dist-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, f\"{metric.capitalize()} is\", len(result))\n",
+            "/usr/local/lib/python3.12/dist-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, f\"{metric.capitalize()} is\", len(result))\n",
+            "/usr/local/lib/python3.12/dist-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, f\"{metric.capitalize()} is\", len(result))\n",
+            "               precision    recall  f1-score   support\n",
+            "\n",
+            "      calidad      0.500     0.500     0.500         2\n",
+            "mantenimiento      0.000     0.000     0.000         2\n",
+            "   produccion      0.000     0.000     0.000         2\n",
+            "    seguridad      0.400     1.000     0.571         2\n",
+            "\n",
+            "     accuracy                          0.375         8\n",
+            "    macro avg      0.225     0.375     0.268         8\n",
+            " weighted avg      0.225     0.375     0.268         8\n",
+            "\n",
+            "\n",
+            "== Confusion Matrix ==\n",
+            "[[1 1 0 0]\n",
+            " [0 0 0 2]\n",
+            " [1 0 0 1]\n",
+            " [0 0 0 2]]\n",
+            "\n",
+            "Modelo guardado en: models/model.joblib\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!python src/predict.py --model models/model.joblib --text \"Fuga en válvula de vapor; programar correctivo\"\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "MNUp3GzdZAS6",
+        "outputId": "2d7e5913-7eb4-4fb2-c56d-9fe35e7892d0"
+      },
+      "execution_count": 6,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Texto: Fuga en válvula de vapor; programar correctivo\n",
+            "Predicción: mantenimiento\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!python src/train.py --data data/raw/mis_reportes_ejemplo.csv --out models/model.joblib\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "W4FF8lgLaVtg",
+        "outputId": "32419a79-b94d-4a44-9264-dd7d7243f27b"
+      },
+      "execution_count": 7,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Traceback (most recent call last):\n",
+            "  File \"/content/src/train.py\", line 41, in <module>\n",
+            "    main(args)\n",
+            "  File \"/content/src/train.py\", line 14, in main\n",
+            "    X_train, X_test, y_train, y_test = train_test_split(\n",
+            "                                       ^^^^^^^^^^^^^^^^^\n",
+            "  File \"/usr/local/lib/python3.12/dist-packages/sklearn/utils/_param_validation.py\", line 216, in wrapper\n",
+            "    return func(*args, **kwargs)\n",
+            "           ^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"/usr/local/lib/python3.12/dist-packages/sklearn/model_selection/_split.py\", line 2872, in train_test_split\n",
+            "    train, test = next(cv.split(X=arrays[0], y=stratify))\n",
+            "                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"/usr/local/lib/python3.12/dist-packages/sklearn/model_selection/_split.py\", line 1909, in split\n",
+            "    for train, test in self._iter_indices(X, y, groups):\n",
+            "                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"/usr/local/lib/python3.12/dist-packages/sklearn/model_selection/_split.py\", line 2331, in _iter_indices\n",
+            "    raise ValueError(\n",
+            "ValueError: The test_size = 3 should be greater or equal to the number of classes = 4\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "%%writefile src/train.py\n",
+        "import argparse, joblib, pandas as pd\n",
+        "from sklearn.model_selection import train_test_split\n",
+        "from sklearn.feature_extraction.text import TfidfVectorizer\n",
+        "from sklearn.pipeline import Pipeline\n",
+        "from sklearn.svm import LinearSVC\n",
+        "from sklearn.metrics import classification_report, confusion_matrix, accuracy_score\n",
+        "\n",
+        "def main(args):\n",
+        "    df = pd.read_csv(args.data).dropna(subset=[\"texto\",\"etiqueta\"])\n",
+        "    X = df[\"texto\"].astype(str).values\n",
+        "    y = df[\"etiqueta\"].astype(str).values\n",
+        "\n",
+        "    # test_size dinámico para asegurar ≥1 muestra por clase en test con stratify\n",
+        "    n = len(df)\n",
+        "    n_clases = len(set(y))\n",
+        "    test_size = max(0.34, n_clases / n) if n > 0 else 0.34  # para n=12 y 4 clases → 0.34\n",
+        "\n",
+        "    X_train, X_test, y_train, y_test = train_test_split(\n",
+        "        X, y, test_size=test_size, random_state=42, stratify=y\n",
+        "    )\n",
+        "\n",
+        "    pipe = Pipeline([\n",
+        "        (\"tfidf\", TfidfVectorizer(lowercase=True, stop_words=None, ngram_range=(1,2), min_df=1)),\n",
+        "        (\"clf\", LinearSVC(class_weight=\"balanced\", random_state=42)),\n",
+        "    ])\n",
+        "\n",
+        "    pipe.fit(X_train, y_train)\n",
+        "    y_pred = pipe.predict(X_test)\n",
+        "\n",
+        "    acc = accuracy_score(y_test, y_pred)\n",
+        "    print(f\"Accuracy: {acc:.3f}\")\n",
+        "    print(\"\\n== Clasification Report ==\")\n",
+        "    print(classification_report(y_test, y_pred, digits=3))\n",
+        "    print(\"\\n== Confusion Matrix ==\")\n",
+        "    print(confusion_matrix(y_test, y_pred))\n",
+        "\n",
+        "    joblib.dump(pipe, args.out)\n",
+        "    print(f\"\\nModelo guardado en: {args.out}\")\n",
+        "\n",
+        "if __name__ == \"__main__\":\n",
+        "    parser = argparse.ArgumentParser()\n",
+        "    parser.add_argument(\"--data\", type=str, required=True)\n",
+        "    parser.add_argument(\"--out\", type=str, default=\"models/model.joblib\")\n",
+        "    args = parser.parse_args()\n",
+        "    main(args)\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "CTFxGVuraq2p",
+        "outputId": "b9ae57a3-ac38-4702-ff0f-78a2fd1ad295"
+      },
+      "execution_count": 9,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Overwriting src/train.py\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!python src/train.py --data data/raw/mis_reportes_ejemplo.csv --out models/model.joblib\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ap1oIdPNau39",
+        "outputId": "4bd6e5f1-f512-4c0e-ae0c-8c10de643d8c"
+      },
+      "execution_count": 10,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Accuracy: 0.200\n",
+            "\n",
+            "== Clasification Report ==\n",
+            "/usr/local/lib/python3.12/dist-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, f\"{metric.capitalize()} is\", len(result))\n",
+            "/usr/local/lib/python3.12/dist-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, f\"{metric.capitalize()} is\", len(result))\n",
+            "/usr/local/lib/python3.12/dist-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, f\"{metric.capitalize()} is\", len(result))\n",
+            "               precision    recall  f1-score   support\n",
+            "\n",
+            "      calidad      0.000     0.000     0.000         1\n",
+            "mantenimiento      1.000     1.000     1.000         1\n",
+            "   produccion      0.000     0.000     0.000         2\n",
+            "    seguridad      0.000     0.000     0.000         1\n",
+            "\n",
+            "     accuracy                          0.200         5\n",
+            "    macro avg      0.250     0.250     0.250         5\n",
+            " weighted avg      0.200     0.200     0.200         5\n",
+            "\n",
+            "\n",
+            "== Confusion Matrix ==\n",
+            "[[0 0 0 1]\n",
+            " [0 1 0 0]\n",
+            " [1 0 0 1]\n",
+            " [1 0 0 0]]\n",
+            "\n",
+            "Modelo guardado en: models/model.joblib\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "%%writefile src/cv_compare.py\n",
+        "import argparse, pandas as pd, numpy as np\n",
+        "from sklearn.model_selection import StratifiedKFold, cross_val_score\n",
+        "from sklearn.pipeline import Pipeline\n",
+        "from sklearn.feature_extraction.text import TfidfVectorizer\n",
+        "from sklearn.svm import LinearSVC\n",
+        "from sklearn.linear_model import LogisticRegression\n",
+        "\n",
+        "def run_model(name, clf, X, y):\n",
+        "    pipe = Pipeline([\n",
+        "        (\"tfidf\", TfidfVectorizer(lowercase=True, ngram_range=(1,3), min_df=1)),\n",
+        "        (\"clf\", clf),\n",
+        "    ])\n",
+        "    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)\n",
+        "    scores = cross_val_score(pipe, X, y, cv=cv, scoring=\"f1_macro\")\n",
+        "    print(f\"{name:20s}  F1-macro CV: {scores.mean():.3f} ± {scores.std():.3f}\")\n",
+        "    return scores.mean(), pipe\n",
+        "\n",
+        "if __name__ == \"__main__\":\n",
+        "    ap = argparse.ArgumentParser()\n",
+        "    ap.add_argument(\"--data\", required=True)\n",
+        "    args = ap.parse_args()\n",
+        "\n",
+        "    df = pd.read_csv(args.data).dropna(subset=[\"texto\",\"etiqueta\"])\n",
+        "    X, y = df[\"texto\"].astype(str).values, df[\"etiqueta\"].astype(str).values\n",
+        "\n",
+        "    m1, _ = run_model(\"LinearSVC\", LinearSVC(class_weight=\"balanced\", random_state=42), X, y)\n",
+        "    m2, _ = run_model(\"LogisticRegression\",\n",
+        "                      LogisticRegression(max_iter=2000, class_weight=\"balanced\"),\n",
+        "                      X, y)\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "O1iBRpSBbKAV",
+        "outputId": "d89d5241-8c57-4666-8342-c290583ced0c"
+      },
+      "execution_count": 11,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Writing src/cv_compare.py\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!python src/cv_compare.py --data data/raw/mis_reportes_ejemplo.csv\n",
+        "\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "6PuCfyMqbPfR",
+        "outputId": "9f7fb0b9-0613-4c28-865e-f9b387eab8c5"
+      },
+      "execution_count": 12,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Traceback (most recent call last):\n",
+            "  File \"/content/src/cv_compare.py\", line 26, in <module>\n",
+            "    m1, _ = run_model(\"LinearSVC\", LinearSVC(class_weight=\"balanced\", random_state=42), X, y)\n",
+            "            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"/content/src/cv_compare.py\", line 14, in run_model\n",
+            "    scores = cross_val_score(pipe, X, y, cv=cv, scoring=\"f1_macro\")\n",
+            "             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"/usr/local/lib/python3.12/dist-packages/sklearn/utils/_param_validation.py\", line 216, in wrapper\n",
+            "    return func(*args, **kwargs)\n",
+            "           ^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"/usr/local/lib/python3.12/dist-packages/sklearn/model_selection/_validation.py\", line 684, in cross_val_score\n",
+            "    cv_results = cross_validate(\n",
+            "                 ^^^^^^^^^^^^^^^\n",
+            "  File \"/usr/local/lib/python3.12/dist-packages/sklearn/utils/_param_validation.py\", line 216, in wrapper\n",
+            "    return func(*args, **kwargs)\n",
+            "           ^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"/usr/local/lib/python3.12/dist-packages/sklearn/model_selection/_validation.py\", line 411, in cross_validate\n",
+            "    results = parallel(\n",
+            "              ^^^^^^^^^\n",
+            "  File \"/usr/local/lib/python3.12/dist-packages/sklearn/utils/parallel.py\", line 77, in __call__\n",
+            "    return super().__call__(iterable_with_config)\n",
+            "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"/usr/local/lib/python3.12/dist-packages/joblib/parallel.py\", line 1986, in __call__\n",
+            "    return output if self.return_generator else list(output)\n",
+            "                                                ^^^^^^^^^^^^\n",
+            "  File \"/usr/local/lib/python3.12/dist-packages/joblib/parallel.py\", line 1911, in _get_sequential_output\n",
+            "    for func, args, kwargs in iterable:\n",
+            "                              ^^^^^^^^\n",
+            "  File \"/usr/local/lib/python3.12/dist-packages/sklearn/utils/parallel.py\", line 75, in <genexpr>\n",
+            "    for delayed_func, args, kwargs in iterable\n",
+            "                                      ^^^^^^^^\n",
+            "  File \"/usr/local/lib/python3.12/dist-packages/sklearn/model_selection/_validation.py\", line 428, in <genexpr>\n",
+            "    for train, test in indices\n",
+            "                       ^^^^^^^\n",
+            "  File \"/usr/local/lib/python3.12/dist-packages/sklearn/model_selection/_split.py\", line 411, in split\n",
+            "    for train, test in super().split(X, y, groups):\n",
+            "                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"/usr/local/lib/python3.12/dist-packages/sklearn/model_selection/_split.py\", line 142, in split\n",
+            "    for test_index in self._iter_test_masks(X, y, groups):\n",
+            "                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"/usr/local/lib/python3.12/dist-packages/sklearn/model_selection/_split.py\", line 838, in _iter_test_masks\n",
+            "    test_folds = self._make_test_folds(X, y)\n",
+            "                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"/usr/local/lib/python3.12/dist-packages/sklearn/model_selection/_split.py\", line 800, in _make_test_folds\n",
+            "    raise ValueError(\n",
+            "ValueError: n_splits=5 cannot be greater than the number of members in each class.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "%%writefile src/cv_compare.py\n",
+        "import argparse, pandas as pd, numpy as np\n",
+        "from collections import Counter\n",
+        "from sklearn.model_selection import StratifiedKFold, cross_val_score\n",
+        "from sklearn.pipeline import Pipeline\n",
+        "from sklearn.feature_extraction.text import TfidfVectorizer\n",
+        "from sklearn.svm import LinearSVC\n",
+        "from sklearn.linear_model import LogisticRegression\n",
+        "\n",
+        "def best_k(y, k_max=5):\n",
+        "    cnt = Counter(y)\n",
+        "    min_class = min(cnt.values())\n",
+        "    # Al menos 2 folds y como máximo k_max, sin exceder el tamaño de la clase menor\n",
+        "    return max(2, min(k_max, min_class))\n",
+        "\n",
+        "def run_model(name, clf, X, y, k):\n",
+        "    pipe = Pipeline([\n",
+        "        (\"tfidf\", TfidfVectorizer(lowercase=True, ngram_range=(1,3), min_df=1)),\n",
+        "        (\"clf\", clf),\n",
+        "    ])\n",
+        "    cv = StratifiedKFold(n_splits=k, shuffle=True, random_state=42)\n",
+        "    scores = cross_val_score(pipe, X, y, cv=cv, scoring=\"f1_macro\")\n",
+        "    print(f\"{name:20s}  F1-macro CV ({k}-fold): {scores.mean():.3f} ± {scores.std():.3f}\")\n",
+        "    return scores.mean()\n",
+        "\n",
+        "if __name__ == \"__main__\":\n",
+        "    ap = argparse.ArgumentParser()\n",
+        "    ap.add_argument(\"--data\", required=True)\n",
+        "    args = ap.parse_args()\n",
+        "\n",
+        "    df = pd.read_csv(args.data).dropna(subset=[\"texto\",\"etiqueta\"])\n",
+        "    X, y = df[\"texto\"].astype(str).values, df[\"etiqueta\"].astype(str).values\n",
+        "\n",
+        "    k = best_k(y, k_max=5)\n",
+        "    print(f\"Usando StratifiedKFold con k={k}\")\n",
+        "\n",
+        "    run_model(\"LinearSVC\", LinearSVC(class_weight=\"balanced\", random_state=42), X, y, k)\n",
+        "    run_model(\"LogisticRegression\",\n",
+        "              LogisticRegression(max_iter=2000, class_weight=\"balanced\"),\n",
+        "              X, y, k)\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "riAhtL4qbgxu",
+        "outputId": "7768e5c6-80aa-479e-de71-81cff2d3b703"
+      },
+      "execution_count": 13,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Overwriting src/cv_compare.py\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!python src/cv_compare.py --data data/raw/mis_reportes_ejemplo.csv\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "pUtaU_H-bkEm",
+        "outputId": "e88e9bf6-aa9e-42ca-9eaf-3b0d7a087618"
+      },
+      "execution_count": 14,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Usando StratifiedKFold con k=3\n",
+            "LinearSVC             F1-macro CV (3-fold): 0.083 ± 0.059\n",
+            "LogisticRegression    F1-macro CV (3-fold): 0.083 ± 0.059\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# crea data/raw/mis_reportes_32.csv (32 filas)\n",
+        "import pandas as pd\n",
+        "rows = [\n",
+        "    (\"Peso fuera de nominal; revisar tiempo de llenado\", \"calidad\"),\n",
+        "    (\"Superficie rugosa por ICP inestable\", \"calidad\"),\n",
+        "    (\"Color desigual; pigmento no homogéneo\", \"calidad\"),\n",
+        "    (\"Líneas de flujo; temperatura de molde baja\", \"calidad\"),\n",
+        "    (\"Rebaba; presión de cierre insuficiente\", \"calidad\"),\n",
+        "    (\"Porosidad interna; vapor insuficiente\", \"calidad\"),\n",
+        "    (\"Dimensión fuera de tolerancia; enfriamiento corto\", \"calidad\"),\n",
+        "    (\"Textura irregular; agua de enfriamiento caliente\", \"calidad\"),\n",
+        "\n",
+        "    (\"Interlock con falso contacto; cambiar conector\", \"mantenimiento\"),\n",
+        "    (\"Fuga en válvula de vapor; programar correctivo\", \"mantenimiento\"),\n",
+        "    (\"Sensor de temperatura fuera de calibración\", \"mantenimiento\"),\n",
+        "    (\"Electroválvula no acciona; revisar bobina\", \"mantenimiento\"),\n",
+        "    (\"Vibración en bomba; posible desbalance\", \"mantenimiento\"),\n",
+        "    (\"Cambio de sello mecánico; registrar en OT\", \"mantenimiento\"),\n",
+        "    (\"Filtro de agua obstruido; caída de presión\", \"mantenimiento\"),\n",
+        "    (\"PLC con falla intermitente; actualizar firmware\", \"mantenimiento\"),\n",
+        "\n",
+        "    (\"Operador sin guantes en zona de corte\", \"seguridad\"),\n",
+        "    (\"Derrame de aceite; señalizar y limpiar\", \"seguridad\"),\n",
+        "    (\"Guardas retiradas; aplicar LOTO\", \"seguridad\"),\n",
+        "    (\"Carga mal estibada; riesgo de caída\", \"seguridad\"),\n",
+        "    (\"Extintor vencido; reemplazo urgente\", \"seguridad\"),\n",
+        "    (\"Ruta de evacuación bloqueada\", \"seguridad\"),\n",
+        "    (\"Exposición a vapor sin careta\", \"seguridad\"),\n",
+        "    (\"Cable pelado; riesgo eléctrico\", \"seguridad\"),\n",
+        "\n",
+        "    (\"Ciclo de moldeo a 62 s; UPH baja\", \"produccion\"),\n",
+        "    (\"Paro por cambio de molde 40 min\", \"produccion\"),\n",
+        "    (\"Scrap 3.2%; objetivo 2.0%\", \"produccion\"),\n",
+        "    (\"Incrementar ICP a 1.6 bar\", \"produccion\"),\n",
+        "    (\"Bead 22P con humedad; secado 30 min\", \"produccion\"),\n",
+        "    (\"Backlog 120 piezas; priorizar Lear\", \"produccion\"),\n",
+        "    (\"Nueva receta reduce vapor 8%\", \"produccion\"),\n",
+        "    (\"Corte agrega 12 s al ciclo\", \"produccion\"),\n",
+        "]\n",
+        "pd.DataFrame(rows, columns=[\"texto\",\"etiqueta\"]).to_csv(\"data/raw/mis_reportes_32.csv\", index=False)\n",
+        "print(\"Guardado en data/raw/mis_reportes_32.csv\")\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "X9vKdXHGbymP",
+        "outputId": "033aaf08-9a6c-4ca1-8a11-8875af8ac511"
+      },
+      "execution_count": 15,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Guardado en data/raw/mis_reportes_32.csv\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!python src/cv_compare.py --data data/raw/mis_reportes_32.csv\n",
+        "!python src/train.py --data data/raw/mis_reportes_32.csv --out models/model_logreg.joblib --model logreg\n",
+        "!python src/predict.py --model models/model_logreg.joblib --text \"Fuga en válvula de vapor; programar correctivo\"\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "8TIkXDBXb4No",
+        "outputId": "178bd103-b90d-4726-fbf6-a32697035404"
+      },
+      "execution_count": 16,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Usando StratifiedKFold con k=5\n",
+            "LinearSVC             F1-macro CV (5-fold): 0.365 ± 0.165\n",
+            "LogisticRegression    F1-macro CV (5-fold): 0.329 ± 0.201\n",
+            "usage: train.py [-h] --data DATA [--out OUT]\n",
+            "train.py: error: unrecognized arguments: --model logreg\n",
+            "Traceback (most recent call last):\n",
+            "  File \"/content/src/predict.py\", line 25, in <module>\n",
+            "    model = load_model(args.model)\n",
+            "            ^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"/content/src/predict.py\", line 4, in load_model\n",
+            "    return joblib.load(path)\n",
+            "           ^^^^^^^^^^^^^^^^^\n",
+            "  File \"/usr/local/lib/python3.12/dist-packages/joblib/numpy_pickle.py\", line 735, in load\n",
+            "    with open(filename, \"rb\") as f:\n",
+            "         ^^^^^^^^^^^^^^^^^^^^\n",
+            "FileNotFoundError: [Errno 2] No such file or directory: 'models/model_logreg.joblib'\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "%%writefile src/train.py\n",
+        "import argparse, joblib, pandas as pd\n",
+        "from sklearn.model_selection import train_test_split\n",
+        "from sklearn.pipeline import Pipeline\n",
+        "from sklearn.feature_extraction.text import TfidfVectorizer\n",
+        "from sklearn.svm import LinearSVC\n",
+        "from sklearn.linear_model import LogisticRegression\n",
+        "from sklearn.metrics import classification_report, confusion_matrix, accuracy_score\n",
+        "\n",
+        "def build_model(model):\n",
+        "    if model == \"svc\":\n",
+        "        clf = LinearSVC(class_weight=\"balanced\", random_state=42)\n",
+        "    else:\n",
+        "        clf = LogisticRegression(max_iter=2000, class_weight=\"balanced\")\n",
+        "    return Pipeline([\n",
+        "        (\"tfidf\", TfidfVectorizer(lowercase=True, ngram_range=(1,3), min_df=1)),\n",
+        "        (\"clf\", clf),\n",
+        "    ])\n",
+        "\n",
+        "if __name__ == \"__main__\":\n",
+        "    ap = argparse.ArgumentParser()\n",
+        "    ap.add_argument(\"--data\", required=True, help=\"Ruta al CSV con columnas texto,etiqueta\")\n",
+        "    ap.add_argument(\"--out\", default=\"models/model.joblib\")\n",
+        "    ap.add_argument(\"--model\", choices=[\"svc\",\"logreg\"], default=\"logreg\",\n",
+        "                    help=\"Modelo a usar: svc o logreg\")\n",
+        "    ap.add_argument(\"--test_size\", type=float, default=0.34,\n",
+        "                    help=\"Proporción de test (>= clases/n) para stratify\")\n",
+        "    args = ap.parse_args()\n",
+        "\n",
+        "    df = pd.read_csv(args.data).dropna(subset=[\"texto\",\"etiqueta\"])\n",
+        "    X, y = df[\"texto\"].astype(str).values, df[\"etiqueta\"].astype(str).values\n",
+        "\n",
+        "    Xtr, Xte, ytr, yte = train_test_split(\n",
+        "        X, y, test_size=args.test_size, random_state=42, stratify=y\n",
+        "    )\n",
+        "\n",
+        "    pipe = build_model(args.model)\n",
+        "    pipe.fit(Xtr, ytr)\n",
+        "    yhat = pipe.predict(Xte)\n",
+        "\n",
+        "    print(f\"Accuracy: {accuracy_score(yte, yhat):.3f}\\n\")\n",
+        "    print(\"== Clasification Report ==\")\n",
+        "    print(classification_report(yte, yhat, digits=3))\n",
+        "    print(\"\\n== Confusion Matrix ==\")\n",
+        "    print(confusion_matrix(yte, yhat))\n",
+        "\n",
+        "    joblib.dump(pipe, args.out)\n",
+        "    print(f\"\\nModelo guardado en: {args.out}\")\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "T8yDptHJcKZW",
+        "outputId": "724772e0-8cf1-40f5-e05f-13f9152c9f28"
+      },
+      "execution_count": 17,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Overwriting src/train.py\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!python src/train.py --data data/raw/mis_reportes_ejemplo.csv --out models/model_logreg.joblib --model logreg\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "tEucKspIcPVZ",
+        "outputId": "a7f09836-a5ca-4f31-b022-c8075dcb02d7"
+      },
+      "execution_count": 18,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Accuracy: 0.200\n",
+            "\n",
+            "== Clasification Report ==\n",
+            "/usr/local/lib/python3.12/dist-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, f\"{metric.capitalize()} is\", len(result))\n",
+            "/usr/local/lib/python3.12/dist-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, f\"{metric.capitalize()} is\", len(result))\n",
+            "/usr/local/lib/python3.12/dist-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, f\"{metric.capitalize()} is\", len(result))\n",
+            "               precision    recall  f1-score   support\n",
+            "\n",
+            "      calidad      0.000     0.000     0.000         1\n",
+            "mantenimiento      1.000     1.000     1.000         1\n",
+            "   produccion      0.000     0.000     0.000         2\n",
+            "    seguridad      0.000     0.000     0.000         1\n",
+            "\n",
+            "     accuracy                          0.200         5\n",
+            "    macro avg      0.250     0.250     0.250         5\n",
+            " weighted avg      0.200     0.200     0.200         5\n",
+            "\n",
+            "\n",
+            "== Confusion Matrix ==\n",
+            "[[0 0 0 1]\n",
+            " [0 1 0 0]\n",
+            " [1 0 0 1]\n",
+            " [1 0 0 0]]\n",
+            "\n",
+            "Modelo guardado en: models/model_logreg.joblib\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!python src/train.py --data data/raw/mis_reportes_32.csv --out models/model_logreg.joblib --model logreg\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "eyIxfDphcYq0",
+        "outputId": "2e5c75df-1284-4a71-ec3a-f44ad1611f55"
+      },
+      "execution_count": 19,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Accuracy: 0.364\n",
+            "\n",
+            "== Clasification Report ==\n",
+            "/usr/local/lib/python3.12/dist-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, f\"{metric.capitalize()} is\", len(result))\n",
+            "/usr/local/lib/python3.12/dist-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, f\"{metric.capitalize()} is\", len(result))\n",
+            "/usr/local/lib/python3.12/dist-packages/sklearn/metrics/_classification.py:1565: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.\n",
+            "  _warn_prf(average, modifier, f\"{metric.capitalize()} is\", len(result))\n",
+            "               precision    recall  f1-score   support\n",
+            "\n",
+            "      calidad      0.333     0.667     0.444         3\n",
+            "mantenimiento      0.250     0.500     0.333         2\n",
+            "   produccion      1.000     0.333     0.500         3\n",
+            "    seguridad      0.000     0.000     0.000         3\n",
+            "\n",
+            "     accuracy                          0.364        11\n",
+            "    macro avg      0.396     0.375     0.319        11\n",
+            " weighted avg      0.409     0.364     0.318        11\n",
+            "\n",
+            "\n",
+            "== Confusion Matrix ==\n",
+            "[[2 1 0 0]\n",
+            " [1 1 0 0]\n",
+            " [1 1 1 0]\n",
+            " [2 1 0 0]]\n",
+            "\n",
+            "Modelo guardado en: models/model_logreg.joblib\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!python src/predict.py --model models/model_logreg.joblib --text \"Fuga en válvula de vapor; programar correctivo\"\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "PotqXb_gce_f",
+        "outputId": "a4912ded-bb2a-4ead-fd86-08e485e8b21c"
+      },
+      "execution_count": 20,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Texto: Fuga en válvula de vapor; programar correctivo\n",
+            "Predicción: mantenimiento\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!head -n 25 src/train.py\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "_htl4DlaclAR",
+        "outputId": "eebe91af-f9a0-4cd3-ab20-13923471df95"
+      },
+      "execution_count": 21,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "import argparse, joblib, pandas as pd\n",
+            "from sklearn.model_selection import train_test_split\n",
+            "from sklearn.pipeline import Pipeline\n",
+            "from sklearn.feature_extraction.text import TfidfVectorizer\n",
+            "from sklearn.svm import LinearSVC\n",
+            "from sklearn.linear_model import LogisticRegression\n",
+            "from sklearn.metrics import classification_report, confusion_matrix, accuracy_score\n",
+            "\n",
+            "def build_model(model):\n",
+            "    if model == \"svc\":\n",
+            "        clf = LinearSVC(class_weight=\"balanced\", random_state=42)\n",
+            "    else:\n",
+            "        clf = LogisticRegression(max_iter=2000, class_weight=\"balanced\")\n",
+            "    return Pipeline([\n",
+            "        (\"tfidf\", TfidfVectorizer(lowercase=True, ngram_range=(1,3), min_df=1)),\n",
+            "        (\"clf\", clf),\n",
+            "    ])\n",
+            "\n",
+            "if __name__ == \"__main__\":\n",
+            "    ap = argparse.ArgumentParser()\n",
+            "    ap.add_argument(\"--data\", required=True, help=\"Ruta al CSV con columnas texto,etiqueta\")\n",
+            "    ap.add_argument(\"--out\", default=\"models/model.joblib\")\n",
+            "    ap.add_argument(\"--model\", choices=[\"svc\",\"logreg\"], default=\"logreg\",\n",
+            "                    help=\"Modelo a usar: svc o logreg\")\n",
+            "    ap.add_argument(\"--test_size\", type=float, default=0.34,\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!python src/train.py --data data/raw/mis_reportes_simulado_balanceado_800.csv --out models/model_logreg.joblib --model logreg\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "oMmtNswNeP9d",
+        "outputId": "ccd181bd-a38e-4f96-e0df-a51b8f3e4612"
+      },
+      "execution_count": 22,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Accuracy: 1.000\n",
+            "\n",
+            "== Clasification Report ==\n",
+            "               precision    recall  f1-score   support\n",
+            "\n",
+            "      calidad      1.000     1.000     1.000        68\n",
+            "mantenimiento      1.000     1.000     1.000        68\n",
+            "   produccion      1.000     1.000     1.000        68\n",
+            "    seguridad      1.000     1.000     1.000        68\n",
+            "\n",
+            "     accuracy                          1.000       272\n",
+            "    macro avg      1.000     1.000     1.000       272\n",
+            " weighted avg      1.000     1.000     1.000       272\n",
+            "\n",
+            "\n",
+            "== Confusion Matrix ==\n",
+            "[[68  0  0  0]\n",
+            " [ 0 68  0  0]\n",
+            " [ 0  0 68  0]\n",
+            " [ 0  0  0 68]]\n",
+            "\n",
+            "Modelo guardado en: models/model_logreg.joblib\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!python src/predict.py --model models/model_logreg.joblib --text \"Interlock de puerta presenta falso contacto en máquina 7\"\n",
+        "!python src/predict.py --model models/model_logreg.joblib --text \"Scrap del turno en 3.2%; objetivo 2.0%\"\n",
+        "!python src/predict.py --model models/model_logreg.joblib --text \"Operador sin gafas en zona de corte\"\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "XuxL5qx1ecYO",
+        "outputId": "d48382c4-a8d9-4b11-c162-50d3d72f6ebc"
+      },
+      "execution_count": 23,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Texto: Interlock de puerta presenta falso contacto en máquina 7\n",
+            "Predicción: mantenimiento\n",
+            "Texto: Scrap del turno en 3.2%; objetivo 2.0%\n",
+            "Predicción: produccion\n",
+            "Texto: Operador sin gafas en zona de corte\n",
+            "Predicción: seguridad\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!python src/train.py --data data/raw/mis_reportes_simulado_balanceado_800.csv --out models/model_logreg.joblib --model logreg\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "rV22XXwMecLr",
+        "outputId": "d869f523-31de-43ce-b314-e43b71f6f3f7"
+      },
+      "execution_count": 24,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Accuracy: 1.000\n",
+            "\n",
+            "== Clasification Report ==\n",
+            "               precision    recall  f1-score   support\n",
+            "\n",
+            "      calidad      1.000     1.000     1.000        68\n",
+            "mantenimiento      1.000     1.000     1.000        68\n",
+            "   produccion      1.000     1.000     1.000        68\n",
+            "    seguridad      1.000     1.000     1.000        68\n",
+            "\n",
+            "     accuracy                          1.000       272\n",
+            "    macro avg      1.000     1.000     1.000       272\n",
+            " weighted avg      1.000     1.000     1.000       272\n",
+            "\n",
+            "\n",
+            "== Confusion Matrix ==\n",
+            "[[68  0  0  0]\n",
+            " [ 0 68  0  0]\n",
+            " [ 0  0 68  0]\n",
+            " [ 0  0  0 68]]\n",
+            "\n",
+            "Modelo guardado en: models/model_logreg.joblib\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!pip install matplotlib seaborn\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "SRcLsJI8fLmT",
+        "outputId": "12dd2f35-6ce9-486e-f9b9-d8bbdb4dc460"
+      },
+      "execution_count": 25,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: matplotlib in /usr/local/lib/python3.12/dist-packages (3.10.0)\n",
+            "Requirement already satisfied: seaborn in /usr/local/lib/python3.12/dist-packages (0.13.2)\n",
+            "Requirement already satisfied: contourpy>=1.0.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib) (1.3.3)\n",
+            "Requirement already satisfied: cycler>=0.10 in /usr/local/lib/python3.12/dist-packages (from matplotlib) (0.12.1)\n",
+            "Requirement already satisfied: fonttools>=4.22.0 in /usr/local/lib/python3.12/dist-packages (from matplotlib) (4.59.2)\n",
+            "Requirement already satisfied: kiwisolver>=1.3.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib) (1.4.9)\n",
+            "Requirement already satisfied: numpy>=1.23 in /usr/local/lib/python3.12/dist-packages (from matplotlib) (2.0.2)\n",
+            "Requirement already satisfied: packaging>=20.0 in /usr/local/lib/python3.12/dist-packages (from matplotlib) (25.0)\n",
+            "Requirement already satisfied: pillow>=8 in /usr/local/lib/python3.12/dist-packages (from matplotlib) (11.3.0)\n",
+            "Requirement already satisfied: pyparsing>=2.3.1 in /usr/local/lib/python3.12/dist-packages (from matplotlib) (3.2.3)\n",
+            "Requirement already satisfied: python-dateutil>=2.7 in /usr/local/lib/python3.12/dist-packages (from matplotlib) (2.9.0.post0)\n",
+            "Requirement already satisfied: pandas>=1.2 in /usr/local/lib/python3.12/dist-packages (from seaborn) (2.2.2)\n",
+            "Requirement already satisfied: pytz>=2020.1 in /usr/local/lib/python3.12/dist-packages (from pandas>=1.2->seaborn) (2025.2)\n",
+            "Requirement already satisfied: tzdata>=2022.7 in /usr/local/lib/python3.12/dist-packages (from pandas>=1.2->seaborn) (2025.2)\n",
+            "Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.12/dist-packages (from python-dateutil>=2.7->matplotlib) (1.17.0)\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "%%writefile src/evaluate.py\n",
+        "import argparse, joblib, pandas as pd\n",
+        "import matplotlib.pyplot as plt\n",
+        "import seaborn as sns\n",
+        "from sklearn.metrics import classification_report, confusion_matrix\n",
+        "\n",
+        "if __name__ == \"__main__\":\n",
+        "    ap = argparse.ArgumentParser()\n",
+        "    ap.add_argument(\"--data\", required=True, help=\"CSV con columnas texto, etiqueta\")\n",
+        "    ap.add_argument(\"--model\", required=True, help=\"Modelo entrenado .joblib\")\n",
+        "    ap.add_argument(\"--out_csv\", default=\"metrics.csv\")\n",
+        "    args = ap.parse_args()\n",
+        "\n",
+        "    # Cargar datos y modelo\n",
+        "    df = pd.read_csv(args.data).dropna(subset=[\"texto\",\"etiqueta\"])\n",
+        "    X, y = df[\"texto\"].astype(str).values, df[\"etiqueta\"].astype(str).values\n",
+        "    model = joblib.load(args.model)\n",
+        "\n",
+        "    # Predicciones\n",
+        "    y_pred = model.predict(X)\n",
+        "\n",
+        "    # Clasification report → DataFrame\n",
+        "    report = classification_report(y, y_pred, output_dict=True, digits=3)\n",
+        "    df_report = pd.DataFrame(report).transpose()\n",
+        "    df_report.to_csv(args.out_csv)\n",
+        "    print(f\"📊 Métricas guardadas en {args.out_csv}\")\n",
+        "    print(df_report)\n",
+        "\n",
+        "    # Confusion matrix\n",
+        "    cm = confusion_matrix(y, y_pred, labels=model.classes_)\n",
+        "    plt.figure(figsize=(6,5))\n",
+        "    sns.heatmap(cm, annot=True, fmt=\"d\", cmap=\"Blues\",\n",
+        "                xticklabels=model.classes_, yticklabels=model.classes_)\n",
+        "    plt.xlabel(\"Predicción\")\n",
+        "    plt.ylabel(\"Real\")\n",
+        "    plt.title(\"Matriz de Confusión\")\n",
+        "    plt.tight_layout()\n",
+        "    plt.savefig(\"confusion_matrix.png\")\n",
+        "    plt.show()\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "O4s32_aSfZ1F",
+        "outputId": "edddf3de-596e-433b-95f5-b4461e57a6ed"
+      },
+      "execution_count": 26,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Writing src/evaluate.py\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!python src/evaluate.py --data data/raw/mis_reportes_simulado_balanceado_800.csv --model models/model_logreg.joblib --out_csv metrics.csv\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "v6mBPKy4fcme",
+        "outputId": "88fb6ed2-65b8-482d-fe7b-815a23ee469d"
+      },
+      "execution_count": 27,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "📊 Métricas guardadas en metrics.csv\n",
+            "               precision  recall  f1-score  support\n",
+            "calidad              1.0     1.0       1.0    200.0\n",
+            "mantenimiento        1.0     1.0       1.0    200.0\n",
+            "produccion           1.0     1.0       1.0    200.0\n",
+            "seguridad            1.0     1.0       1.0    200.0\n",
+            "accuracy             1.0     1.0       1.0      1.0\n",
+            "macro avg            1.0     1.0       1.0    800.0\n",
+            "weighted avg         1.0     1.0       1.0    800.0\n",
+            "Figure(600x500)\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from google.colab import files\n",
+        "files.download(\"metrics.csv\")\n",
+        "files.download(\"confusion_matrix.png\")\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 17
+        },
+        "id": "D4Z0fsldfmYA",
+        "outputId": "6f957ff3-dca9-46df-e08e-77261f302b0f"
+      },
+      "execution_count": 28,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<IPython.core.display.Javascript object>"
+            ],
+            "application/javascript": [
+              "\n",
+              "    async function download(id, filename, size) {\n",
+              "      if (!google.colab.kernel.accessAllowed) {\n",
+              "        return;\n",
+              "      }\n",
+              "      const div = document.createElement('div');\n",
+              "      const label = document.createElement('label');\n",
+              "      label.textContent = `Downloading \"${filename}\": `;\n",
+              "      div.appendChild(label);\n",
+              "      const progress = document.createElement('progress');\n",
+              "      progress.max = size;\n",
+              "      div.appendChild(progress);\n",
+              "      document.body.appendChild(div);\n",
+              "\n",
+              "      const buffers = [];\n",
+              "      let downloaded = 0;\n",
+              "\n",
+              "      const channel = await google.colab.kernel.comms.open(id);\n",
+              "      // Send a message to notify the kernel that we're ready.\n",
+              "      channel.send({})\n",
+              "\n",
+              "      for await (const message of channel.messages) {\n",
+              "        // Send a message to notify the kernel that we're ready.\n",
+              "        channel.send({})\n",
+              "        if (message.buffers) {\n",
+              "          for (const buffer of message.buffers) {\n",
+              "            buffers.push(buffer);\n",
+              "            downloaded += buffer.byteLength;\n",
+              "            progress.value = downloaded;\n",
+              "          }\n",
+              "        }\n",
+              "      }\n",
+              "      const blob = new Blob(buffers, {type: 'application/binary'});\n",
+              "      const a = document.createElement('a');\n",
+              "      a.href = window.URL.createObjectURL(blob);\n",
+              "      a.download = filename;\n",
+              "      div.appendChild(a);\n",
+              "      a.click();\n",
+              "      div.remove();\n",
+              "    }\n",
+              "  "
+            ]
+          },
+          "metadata": {}
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<IPython.core.display.Javascript object>"
+            ],
+            "application/javascript": [
+              "download(\"download_fad29119-fb96-45f8-8832-97e0528f1edd\", \"metrics.csv\", 234)"
+            ]
+          },
+          "metadata": {}
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<IPython.core.display.Javascript object>"
+            ],
+            "application/javascript": [
+              "\n",
+              "    async function download(id, filename, size) {\n",
+              "      if (!google.colab.kernel.accessAllowed) {\n",
+              "        return;\n",
+              "      }\n",
+              "      const div = document.createElement('div');\n",
+              "      const label = document.createElement('label');\n",
+              "      label.textContent = `Downloading \"${filename}\": `;\n",
+              "      div.appendChild(label);\n",
+              "      const progress = document.createElement('progress');\n",
+              "      progress.max = size;\n",
+              "      div.appendChild(progress);\n",
+              "      document.body.appendChild(div);\n",
+              "\n",
+              "      const buffers = [];\n",
+              "      let downloaded = 0;\n",
+              "\n",
+              "      const channel = await google.colab.kernel.comms.open(id);\n",
+              "      // Send a message to notify the kernel that we're ready.\n",
+              "      channel.send({})\n",
+              "\n",
+              "      for await (const message of channel.messages) {\n",
+              "        // Send a message to notify the kernel that we're ready.\n",
+              "        channel.send({})\n",
+              "        if (message.buffers) {\n",
+              "          for (const buffer of message.buffers) {\n",
+              "            buffers.push(buffer);\n",
+              "            downloaded += buffer.byteLength;\n",
+              "            progress.value = downloaded;\n",
+              "          }\n",
+              "        }\n",
+              "      }\n",
+              "      const blob = new Blob(buffers, {type: 'application/binary'});\n",
+              "      const a = document.createElement('a');\n",
+              "      a.href = window.URL.createObjectURL(blob);\n",
+              "      a.download = filename;\n",
+              "      div.appendChild(a);\n",
+              "      a.click();\n",
+              "      div.remove();\n",
+              "    }\n",
+              "  "
+            ]
+          },
+          "metadata": {}
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<IPython.core.display.Javascript object>"
+            ],
+            "application/javascript": [
+              "download(\"download_4d56fe33-bd9f-414d-a81f-87f4e5bc13b7\", \"confusion_matrix.png\", 29659)"
+            ]
+          },
+          "metadata": {}
+        }
+      ]
+    }
+  ]
+}
